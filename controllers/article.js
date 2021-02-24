@@ -3,7 +3,8 @@ const router = express.Router()
 const Article = require('../model/article')
 
 router.get('/', async (req, res) => {
-    res.json(await Article.find({}))
+    const data = await Article.find({})
+    res.json({ articles: data })
 })
 
 router.post('/', async (req, res) => {

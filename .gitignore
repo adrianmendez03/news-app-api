@@ -1,3 +1,5 @@
 node_modules
 .env
-db
+db/createData.js
+db/seed.js
+db/data

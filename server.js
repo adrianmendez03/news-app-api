@@ -1,33 +1,40 @@
-// import dependencies
-require('dotenv').config()
-const express = require('express')
-const mongoose = require('./db/connection')
-const cors = require('cors')
-const logger = require('morgan')
+///////////////////////////
+// Environmental Variables
+///////////////////////////
+require("dotenv").config();
+const { PORT, NODE_ENV = "development" } = process.env;
+const mongoose = require("./db/connection");
 
-// create App
-const app = express()
-const PORT = process.env.PORT || PORT
+//CORS
+const cors = require("cors");
+//Bringing in Express
+const express = require("express");
+const app = express();
 
-// middleware 
-app.use(cors())
-app.use(logger('dev'))
-app.use(express.json())
-
-// default route
-app.get('/', (req, res) => {
-    res.json({
-        message: 'You have hit the default route.. nothing to see here...'
-    })
-})
-
-// controllers
+//OTHER IMPORTS
+const morgan = require("morgan");
 const articleController = require('./controllers/article')
-app.use('/articles', articleController)
-
 const sourceController = require('./controllers/source')
+////////////
+//MIDDLEWARE
+////////////
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(morgan("tiny")); //logging
+
+///////////////
+//Routes and Routers
+//////////////
+app.get("/", (req, res) => {
+  res.json({ msg: "hello world" });
+});
+
+//Use Build and User Routes for default routes
+app.use('/articles', articleController)
 app.use('/sources', sourceController)
 
+//LISTENER
 app.listen(PORT, () => {
-    console.log(`Listening on port: ${PORT}`)
-})
+  console.log(`Your are listening on port ${PORT}`);
+});
